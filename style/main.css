@@ -1,0 +1,114 @@
+.containerField {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: wrap;
+      -ms-flex: wrap;
+          flex: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 660px;
+  padding: 10px 0px;
+  border: 2px solid grey;
+  font-size: 10px;
+}
+
+.containerSide {
+  width: 200px;
+  border: 2px solid red;
+}
+
+.containerRight {
+  border: 2px solid green;
+}
+
+.containerLog {
+  width: 300px;
+  height: 542px;
+  border: 2px solid yellow;
+  overflow: scroll;
+}
+
+.ship {
+  width: 192px;
+  border: 2px solid grey;
+  margin: 2px;
+  position: relative;
+}
+
+.aim {
+  position: absolute;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  border: 2px solid black;
+  border-radius: 15px;
+  top: 5px;
+  right: 0px;
+  background: linear-gradient(black, transparent 2px), linear-gradient(90deg, black, transparent 1px);
+  background-size: 15px 15px;
+  background-position: 0 0, 15px 15px;
+}
+
+.shipR {
+  border: 2px solid red;
+}
+
+.shipG {
+  border: 2px solid green;
+}
+
+.Health1 {
+  width: 180px;
+  -webkit-box-shadow: inset 150px 0 pink;
+          box-shadow: inset 150px 0 pink;
+}
+
+.Health2 {
+  width: 180px;
+  -webkit-box-shadow: inset 105px 0 pink;
+          box-shadow: inset 105px 0 pink;
+}
+
+.Health3 {
+  width: 180px;
+  -webkit-box-shadow: inset 45px 0 pink;
+          box-shadow: inset 45px 0 pink;
+}
+
+.Force1 {
+  width: 180px;
+  -webkit-box-shadow: inset 70px 0 orange;
+          box-shadow: inset 70px 0 orange;
+}
+
+.Force2 {
+  width: 180px;
+  -webkit-box-shadow: inset 150px 0 orange;
+          box-shadow: inset 150px 0 orange;
+}
+
+.Force3 {
+  width: 180px;
+  -webkit-box-shadow: inset 60px 0 orange;
+          box-shadow: inset 60px 0 orange;
+}
+
+.Energy1 {
+  width: 180px;
+  -webkit-box-shadow: inset 36px 0 lightblue;
+          box-shadow: inset 36px 0 lightblue;
+}
+
+.Energy2 {
+  width: 180px;
+  -webkit-box-shadow: inset 45px 0 lightblue;
+          box-shadow: inset 45px 0 lightblue;
+}
+
+.Energy3 {
+  width: 180px;
+  -webkit-box-shadow: inset 150px 0 lightblue;
+          box-shadow: inset 150px 0 lightblue;
+}
+/*# sourceMappingURL=main.css.map */
