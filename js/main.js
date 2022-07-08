@@ -75,25 +75,22 @@ const stepOnEP = 20;
 const cruiserEP = 60;
 const frigateEP = 75;
 const boatEP = 250;
+let gz;
 
 // функція додаваня енергії
-const addEP = (typeOfShip, a, b) => { // a2=cruiserEP
-    console.log(a[0]);
-    if (a[7] === typeOfShip && a[4] === 1) { // cruiser
+const addEP = (typeOfShip, a, b, nameId) => {
+    if (a[7] === typeOfShip && a[4] === 1) {
         if (a[3] === b) {
-            console.log('2');
         } else {
             if (a[3] + stepOnEP >= b) {
                 curentEPR = b;
-                console.log('3');
             } else {
                 curentEPR = a[3] + stepOnEP;
-                console.log('4');
             };
-            console.log('5');
             a[3] = curentEPR;
             peremEP = curentEPR*150/250;
-            const z = document.getElementById('REP' + (arrShipsRed.indexOf(a)+1));
+            //const z = document.getElementById(nameId + (arrShipsRed.indexOf(a)+1));
+            z = document.getElementById(nameId + a[5]);
             z.style.boxShadow = 'inset ' + peremEP + 'px 0 lightblue';
             z.innerHTML = 'Energy: ' + curentEPR + ' EP';
         }
@@ -135,13 +132,7 @@ document.addEventListener('click', e => {
             })
 
             currentHPG = arrShipsGrn[arrGaim.indexOf(el)][1];
-                // log.innerHTML += `e.target.className=${e.target.className} должно быть arrGaim= ${el} **<br>`;
-                // log.innerHTML += `currentHPG = ${arrShipsGrn[arrGaim.indexOf(el)][1]}<br>`;
-                // console.log('arrGaim.indexOf(el) =',arrGaim.indexOf(el));
-                // console.log('arrShipsGrn[arrGaim.indexOf(el)][1] =',arrShipsGrn[arrGaim.indexOf(el)][1]);
-                // console.log(arrShipsGrn);            
-            //console.log('Red currentHP:', currentHP);
-            //console.log('Red currentFP: ', currentFP);
+
             if (arrShipsGrn[arrGaim.indexOf(el)][4] === 1) {
                 const z = document.getElementById('GHP' + (arrGaim.indexOf(el)+1));
                 if (currentHPG <= currentFPR) {
@@ -150,16 +141,6 @@ document.addEventListener('click', e => {
                     z.innerHTML = 'DIED';
                     arrShipsGrn[arrGaim.indexOf(el)][1] = 0;
                     log.innerHTML += `<p style="color:red">Green ship №${arrShipsGrn[arrGaim.indexOf(el)][5]} ${arrShipsGrn[arrGaim.indexOf(el)][0]} with ${currentHPG}HP was sunk (DIED) </p>`;
-
-                    // is game end ?
-                        // gameEnd = 0;
-                        // arrShipsGrn.forEach(el => {
-                        //     gameEnd = gameEnd + el[4]; 
-                        // });
-                        // if (gameEnd = 0) {
-                        //     alert('You win');
-                        //     log.innerHTML += 'YOU WIN';
-                        // };
 
                 } else {
                     log.innerHTML += `<p style="color:red">Green ship №${arrShipsGrn[arrGaim.indexOf(el)][5]} ${arrShipsGrn[arrGaim.indexOf(el)][0]} with ${currentHPG}HP took ${currentFPR}HP of damage</p>`;
@@ -181,8 +162,7 @@ document.addEventListener('click', e => {
             lengthNASG = notdeidArrShipsGrn.length;
 
             if (lengthNASG === 0) {
-                alert('YOU WIN');
-                log.innerHTML += '<p style="color:red">YOU WIN</p>';
+                log.innerHTML += '<p style="color:red font-size: 2em">YOU WIN</p>';
                 log.scrollTop = log.scrollHeight;
                 return;
             }
@@ -193,6 +173,25 @@ document.addEventListener('click', e => {
             currentFP = notdeidArrShipsGrn[nomshipGRandom][2];
             z = document.getElementById('RHP' + (notdeidArrShipsRed[nomshipRRandom][5]));
             log.innerHTML += `<p style="color:green">Green ship №${arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][5]} ${arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][0]} shoot with force ${currentFP}FP</p>`;
+
+            // убавлем єнергию у зеленого корабля кот стрелляет
+            console.log('notdeidArrShipsGrn[nomshipGRandom]', notdeidArrShipsGrn[nomshipGRandom]);
+            console.log('arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom]][3]', arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]][3]);
+
+            arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] -= stepOfEP;
+            if (arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] < stepOfEP) {
+                arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][8] = 0;
+            }
+            gz = document.getElementById('GEP' + (notdeidArrShipsGrn[nomshipGRandom][5]));
+            curentEPR = arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3];
+            peremEP = curentEPR*150/250;
+            gz.style.boxShadow = 'inset ' + peremEP + 'px 0 lightblue';
+            gz.innerHTML = 'Energy: ' + curentEPR + ' EP';
+
+            if (arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] < stepOfEP) {
+                arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][8] = 0;
+            }
+            // конец блока - убавлем єнергию у зеленого корабля кот стрелляет
 
             if (currentHP <= currentFP) {
                 arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][4] = 0;
@@ -215,8 +214,7 @@ document.addEventListener('click', e => {
             lengthNASR = notdeidArrShipsRed.length;
         
             if (lengthNASR === 0) {
-                alert('YOU LOST');
-                log.innerHTML += '<p style="color:green">YOU LOST</p>';
+                log.innerHTML += '<p style="color:green font-size: 2em">YOU LOST</p>';
                 log.scrollTop = log.scrollHeight;
                 return;
             }
@@ -226,59 +224,23 @@ document.addEventListener('click', e => {
 
             // добавляємо енергії червоним кораблям
             arrShipsRed.forEach (el => {
-                console.log('a');
-                addEP(1, el, cruiserEP);
-                // if (el[7] === 1 && el[4] === 1) { // cruiser
-                //     if (el[3] === cruiserEP) {
-                //     } else {
-                //         if (el[3] + stepOnEP >= cruiserEP) {
-                //             curentEPR = cruiserEP;
-                //         } else {
-                //             curentEPR = el[3] + stepOnEP;
-                //         };
-                //         el[3] = curentEPR;
-                //         peremEP = curentEPR*150/250;
-                //         const z = document.getElementById('REP' + (arrShipsRed.indexOf(el)+1));
-                //         z.style.boxShadow = 'inset ' + peremEP + 'px 0 lightblue';
-                //         z.innerHTML = 'Energy: ' + curentEPR + ' EP';
-                //     }
-                // }
-                console.log('b');
+                addEP(1, el, cruiserEP, 'REP');
+                addEP(2, el, frigateEP, 'REP');
+                addEP(3, el, boatEP, 'REP');
 
-                addEP(2, el, frigateEP);
+                if (el[8] === 0) {
+                    if (el[3] >= stepOfEP) {
+                        el[8] = 1;
+                    }
+                } 
+            })
+            // конец пополнения энергии красным
 
-                // if (el[7] === 2 && el[4] === 1) { // Frigate
-                //     if (el[3] === frigateEP) {
-                //     } else {
-                //         if (el[3] + stepOnEP >= frigateEP) {
-                //             curentEPR = frigateEP;
-                //         } else {
-                //             curentEPR = el[3] + stepOnEP;
-                //         };
-                //         peremEP = curentEPR*150/250;
-                //         const z = document.getElementById('REP' + (arrShipsRed.indexOf(el)+1));
-                //         z.style.boxShadow = 'inset ' + peremEP + 'px 0 lightblue';
-                //         z.innerHTML = 'Energy: ' + curentEPR + ' EP';
-                //     }
-                // }
-                console.log('c');
-
-                addEP(3, el, boatEP);
-
-                // if (el[7] === 3 && el[4] === 1) { // Boat
-                //     if (el[3] === boatEP) {
-                //     } else {
-                //         if (el[3] + stepOnEP >= boatEP) {
-                //             curentEPR = boatEP;
-                //         } else {
-                //             curentEPR = el[3] + stepOnEP;
-                //         };
-                //         peremEP = curentEPR*150/250;
-                //         const z = document.getElementById('REP' + (arrShipsRed.indexOf(el)+1));
-                //         z.style.boxShadow = 'inset ' + peremEP + 'px 0 lightblue';
-                //         z.innerHTML = 'Energy: ' + curentEPR + ' EP';
-                //     }
-                // }
+            // добавляємо енергії зеленим кораблям
+            arrShipsGrn.forEach (el => {
+                addEP(1, el, cruiserEP, 'GEP');
+                addEP(2, el, frigateEP, 'GEP');
+                addEP(3, el, boatEP, 'GEP');
 
                 if (el[8] === 0) {
                     if (el[3] >= stepOfEP) {
@@ -289,6 +251,5 @@ document.addEventListener('click', e => {
             // конец пополнения энергии красным
         }
     })
-
 
 });
