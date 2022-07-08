@@ -48,10 +48,14 @@
 
 .shipR {
     border: 2px solid red;
+    background-image: url(../image/3.jfif);
+    background-size: contain;
 }
 
 .shipG {
     border: 2px solid green;
+    background-image: url(../image/1.jfif);
+    background-size: cover;
 }
 
 .Health1 {

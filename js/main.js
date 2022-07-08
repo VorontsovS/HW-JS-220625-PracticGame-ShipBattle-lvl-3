@@ -41,24 +41,21 @@ btnGenShips.addEventListener('click', () => {
     btnGenShips.style.display = 'none';
 })
 
+//формування массиву для перевірки на який приціл червоних клікнули
 const arrRaim = [];
 const arrGaim = [];
 for (i=1; i<11; i++) {
     arrRaim.push('Raim'+ i + ' aim');
     arrGaim.push('Gaim'+ i + ' aim');
 }
-// сформировали массив для проверки на какой прицеп красных кликнули
 
 let Rstep = 0;
 let currentFP = 0;
 let currentHP = 0;
 let currentFPR = 0;
-let currentHPR = 0;
-let currentFPG = 0;
 let currentHPG = 0;
 let nomshipGRandom = 0;
 let nomshipRRandom = 0;
-let gameEnd = 0;
 let notdeidArrShipsRed = [];
 let notdeidArrShipsGrn = [];
 let canShootShipsGrn = [];
@@ -69,7 +66,6 @@ let z;
 let y;
 const log = document.querySelector('.containerLog');
 let curentEPR = 0;
-let curentEPG = 0;
 const stepOfEP = 50;
 let peremEP = 0;
 const stepOnEP = 20;
@@ -92,7 +88,6 @@ const addEP = (typeOfShip, a, b, nameId) => {
             };
             a[3] = curentEPR;
             peremEP = curentEPR*150/250;
-            //const z = document.getElementById(nameId + (arrShipsRed.indexOf(a)+1));
             z = document.getElementById(nameId + a[5]);
             z.style.boxShadow = 'inset ' + peremEP + 'px 0 lightblue';
             z.innerHTML = 'Energy: ' + curentEPR + ' EP';
@@ -109,7 +104,7 @@ document.addEventListener('click', e => {
             currentFPR = arrShipsRed[arrRaim.indexOf(el)][2];
             log.innerHTML += `<p style="color:red">Red ship №${arrShipsRed[arrRaim.indexOf(el)][5]} ${arrShipsRed[arrRaim.indexOf(el)][0]} shoot with force ${currentFPR}FP</p>`; 
         
-            // убавлем єнергию у красного корабля кот стрелляет            
+            // зменьшуємо енергію у червоного корабля який стріляє            
             arrShipsRed[arrRaim.indexOf(el)][3] -= stepOfEP;
             if (arrShipsRed[arrRaim.indexOf(el)][3] < stepOfEP) {
                 arrShipsRed[arrRaim.indexOf(el)][8] = 0;
@@ -189,30 +184,13 @@ document.addEventListener('click', e => {
             if (stepForShootGrn === 0) {
             } else {
                 nomshipRRandom = Number(Math.floor(Math.random() * lengthNASR));
-                //nomshipGRandom = Number(Math.floor(Math.random() * lengthNASG));
                 nomshipGRandom = Number(Math.floor(Math.random() * lengthCSSG));
                 currentHP = notdeidArrShipsRed[nomshipRRandom][1];
-                //currentFP = notdeidArrShipsGrn[nomshipGRandom][2];
                 currentFP = canShootShipsGrn[nomshipGRandom][2];
                 z = document.getElementById('RHP' + (notdeidArrShipsRed[nomshipRRandom][5]));
-                //log.innerHTML += `<p style="color:green">Green ship №${arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][5]} ${arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][0]} shoot with force ${currentFP}FP</p>`;
                 log.innerHTML += `<p style="color:green">Green ship №${arrShipsGrn[canShootShipsGrn[nomshipGRandom][5]-1][5]} ${arrShipsGrn[canShootShipsGrn[nomshipGRandom][5]-1][0]} shoot with force ${currentFP}FP</p>`;
 
-                // зменьшуємо єнергию у зеленого корабля який стріляє
-                // arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] -= stepOfEP;
-                // if (arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] < stepOfEP) {
-                //     arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][8] = 0;
-                // }
-                // gz = document.getElementById('GEP' + (notdeidArrShipsGrn[nomshipGRandom][5]));
-                // curentEPR = arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3];
-                // peremEP = curentEPR*150/250;
-                // gz.style.boxShadow = 'inset ' + peremEP + 'px 0 lightblue';
-                // gz.innerHTML = 'Energy: ' + curentEPR + ' EP';
-
-                // if (arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] < stepOfEP) {
-                //     arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][8] = 0;
-                // }
-
+                // зменьшуємо енергію у зеленого корабля який стріляє
                 arrShipsGrn[canShootShipsGrn[nomshipGRandom][5]-1][3] -= stepOfEP;
                 if (arrShipsGrn[canShootShipsGrn[nomshipGRandom][5]-1][3] < stepOfEP) {
                     arrShipsGrn[canShootShipsGrn[nomshipGRandom][5]-1][8] = 0;
@@ -226,8 +204,7 @@ document.addEventListener('click', e => {
                 if (arrShipsGrn[canShootShipsGrn[nomshipGRandom][5]-1][3] < stepOfEP) {
                     arrShipsGrn[canShootShipsGrn[nomshipGRandom][5]-1][8] = 0;
                 }
-
-                // конец блока - убавлем єнергию у зеленого корабля кот стрелляет
+                // закінчення блоку - зменьшуємо енергію у зеленого корабля який стріляє
 
                 if (currentHP <= currentFP) {
                     arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][4] = 0;
