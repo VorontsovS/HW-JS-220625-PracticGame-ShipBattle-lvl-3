@@ -47,7 +47,6 @@ for (i=1; i<11; i++) {
     arrRaim.push('Raim'+ i + ' aim');
     arrGaim.push('Gaim'+ i + ' aim');
 }
-
 // сформировали массив для проверки на какой прицеп красных кликнули
 
 let Rstep = 0;
@@ -76,6 +75,7 @@ const cruiserEP = 60;
 const frigateEP = 75;
 const boatEP = 250;
 let gz;
+let sumOfAllEP = 0;
 
 // функція додаваня енергії
 const addEP = (typeOfShip, a, b, nameId) => {
@@ -106,8 +106,7 @@ document.addEventListener('click', e => {
             currentFPR = arrShipsRed[arrRaim.indexOf(el)][2];
             log.innerHTML += `<p style="color:red">Red ship №${arrShipsRed[arrRaim.indexOf(el)][5]} ${arrShipsRed[arrRaim.indexOf(el)][0]} shoot with force ${currentFPR}FP</p>`; 
         
-            // убавлем єнергию у красного корабля кот стрелляет
-             
+            // убавлем єнергию у красного корабля кот стрелляет            
             arrShipsRed[arrRaim.indexOf(el)][3] -= stepOfEP;
             if (arrShipsRed[arrRaim.indexOf(el)][3] < stepOfEP) {
                 arrShipsRed[arrRaim.indexOf(el)][8] = 0;
@@ -123,6 +122,19 @@ document.addEventListener('click', e => {
             }
         }
     })
+
+    // перевірка чи зелені можуть стріляти
+    notdeidArrShipsGrn.length = 0;
+    notdeidArrShipsGrn = arrShipsGrn.filter (el => el[4] > 0);
+    sumOfAllEP = 0;
+    notdeidArrShipsGrn.forEach (elem => {
+        sumOfAllEP += elem[8];
+    })
+    if (sumOfAllEP === 0) {
+        Rstep = 0;
+        log.innerHTML += (`<p style="color:green; font-size:2em">Green have not Enery to shoot - YOU Turn</p>`);
+        log.scrollTop = log.scrollHeight;
+    }
 
     arrGaim.forEach(el => {
         if (el === e.target.className &&  Rstep === 1) {
@@ -149,7 +161,6 @@ document.addEventListener('click', e => {
                     z.style.boxShadow = 'inset ' + peremHP + 'px 0 pink';
                     z.innerHTML = 'Health:' + currentHPG + ' HP';
                     arrShipsGrn[arrGaim.indexOf(el)][1] = currentHPG;
-
                 }
             }
 
@@ -162,7 +173,7 @@ document.addEventListener('click', e => {
             lengthNASG = notdeidArrShipsGrn.length;
 
             if (lengthNASG === 0) {
-                log.innerHTML += '<p style="color:red font-size: 2em">YOU WIN</p>';
+                log.innerHTML += '<p style="color:red; font-size:2em">YOU WIN</p>';
                 log.scrollTop = log.scrollHeight;
                 return;
             }
@@ -174,10 +185,7 @@ document.addEventListener('click', e => {
             z = document.getElementById('RHP' + (notdeidArrShipsRed[nomshipRRandom][5]));
             log.innerHTML += `<p style="color:green">Green ship №${arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][5]} ${arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][0]} shoot with force ${currentFP}FP</p>`;
 
-            // убавлем єнергию у зеленого корабля кот стрелляет
-            console.log('notdeidArrShipsGrn[nomshipGRandom]', notdeidArrShipsGrn[nomshipGRandom]);
-            console.log('arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom]][3]', arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]][3]);
-
+            // зменьшуємо єнергию у зеленого корабля який стріляє
             arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] -= stepOfEP;
             if (arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][3] < stepOfEP) {
                 arrShipsGrn[notdeidArrShipsGrn[nomshipGRandom][5]-1][8] = 0;
@@ -199,6 +207,7 @@ document.addEventListener('click', e => {
                 z.innerHTML = 'DIED';
                 arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][1] = 0;
                 log.innerHTML += `<p style="color:green">Red ship №${arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][5]} ${arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][0]} with ${currentHP}HP was sunk (DIED)</p>`;
+                arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][8] = 0;
             } else {
                 log.innerHTML += `<p style="color:green">Red ship №${arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][5]} ${arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][0]} with ${currentHP}HP took ${currentFP}HP of damage</p>`;
                 currentHP = currentHP-currentFP;
@@ -206,7 +215,6 @@ document.addEventListener('click', e => {
                 z.style.boxShadow = 'inset ' + peremHP + 'px 0 pink';
                 z.innerHTML = 'Health: ' + currentHP + ' HP';
                 arrShipsRed[notdeidArrShipsRed[nomshipRRandom][5]-1][1] = currentHP;
-
             }
             
             notdeidArrShipsRed.length = 0;
@@ -214,7 +222,7 @@ document.addEventListener('click', e => {
             lengthNASR = notdeidArrShipsRed.length;
         
             if (lengthNASR === 0) {
-                log.innerHTML += '<p style="color:green font-size: 2em">YOU LOST</p>';
+                log.innerHTML += '<p style="color:green; font-size:2em">YOU LOST</p>';
                 log.scrollTop = log.scrollHeight;
                 return;
             }
@@ -249,7 +257,17 @@ document.addEventListener('click', e => {
                 } 
             })
             // конец пополнения энергии красным
+
+            // перевірка чи красні можуть стріляти
+            sumOfAllEP = 0;
+            notdeidArrShipsRed.forEach (elem => {
+                sumOfAllEP += elem[8];
+            })
+            if (sumOfAllEP === 0) {
+                Rstep = 1;
+                log.innerHTML += (`<p style="color:red; font-size:2em">You have not Energy to shoot - CLICK on Green Aim </p>`);
+                log.scrollTop = log.scrollHeight;
+            }
         }
     })
-
 });
